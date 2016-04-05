@@ -6,8 +6,11 @@
     let express = require('express');
     let app = express();
 
-    app.get('/', function(request, response) {
-        response.sendFile(__dirname + '/public/index.html');
+    app.use(express.static('public'));
+
+    app.get('/blocks', function(req, res) {
+        let blocks = ['Fixed', 'Movavle', 'Rotating'];
+        res.json(blocks);
     });
 
     app.listen(3000);
