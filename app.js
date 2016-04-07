@@ -24,21 +24,11 @@
     app.use(logger);
     app.use(express.static('public'));
 
-    function objectToArray(obj) {
-        let arrayOfProperties = [];
-
-        for(let property in obj) {
-            arrayOfProperties.push(property);
-        }
-
-        return arrayOfProperties;
-    }
-
     app.get('/blocks', function(req, res) {
         if (req.query.limit >= 0) {
-            res.json(objectToArray(blocks).slice(0, req.query.limit));
+            res.json(Object.keys(blocks).slice(0, req.query.limit));
         } else {
-            res.json(objectToArray(blocks));
+            res.json(Object.keys(blocks));
         }
     });
 
