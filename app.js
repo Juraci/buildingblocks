@@ -15,6 +15,12 @@
         'Rotating': 'Moving in a circle around its center'
     };
 
+    let locations = {
+        'Fixed': 'First floor',
+        'Movable': 'Second floor',
+        'Rotating': 'Penthouse'
+    };
+
     app.use(logger);
     app.use(express.static('public'));
 
@@ -36,15 +42,32 @@
         }
     });
 
-    app.get('/blocks/:name', function(req, res) {
+    // Middleware function
+    app.param('name', function(req, res, next) {
         let name = req.params.name;
         let block = `${name[0].toUpperCase()}${name.slice(1).toLowerCase()}`;
-        let description = blocks[block];
+
+        req.blockName = block;
+        next();
+    });
+
+    app.get('/blocks/:name', function(req, res) {
+        let description = blocks[req.blockName];
 
         if (!description) {
-            response.status(404).json(`No description found for ${req.params.name}`);
+            res.status(404).json(`No description found for ${req.params.name}`);
         } else {
             res.json(description);
+        }
+    });
+
+    app.get('/locations/:name', function(req, res) {
+        let location = locations[req.blockName];
+
+        if (!location) {
+            res.status(404).json(`No location found for ${req.params.name}`);
+        } else {
+            res.json(location);
         }
     });
 
