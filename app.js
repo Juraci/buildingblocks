@@ -37,7 +37,9 @@
     });
 
     app.get('/blocks/:name', function(req, res) {
-        let description = blocks[req.params.name];
+        let name = req.params.name;
+        let block = `${name[0].toUpperCase()}${name.slice(1).toLowerCase()}`;
+        let description = blocks[block];
 
         if (!description) {
             response.status(404).json(`No description found for ${req.params.name}`);
