@@ -14,7 +14,11 @@
 
     app.get('/blocks', function(req, res) {
         let blocks = ['Fixed', 'Movable', 'Rotating'];
-        res.json(blocks);
+        if (req.query.limit >= 0) {
+            res.json(blocks.slice(0, req.query.limit));
+        } else {
+            res.json(blocks);
+        }
     });
 
     app.listen(port, function() {
